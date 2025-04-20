@@ -18,10 +18,10 @@ connectDB()
 
 const allowedOrigin = ['https://authentication-mern-green.vercel.app']
 
+app.use(cors({ origin: allowedOrigin, credentials: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })); // ✅ For form data
 app.use(cookieParser())
-app.use(cors({ origin: allowedOrigin, credentials: true }))
 
 app.get('/', (req, res) => {
     res.send("hello from server 5000")
