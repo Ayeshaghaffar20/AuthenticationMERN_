@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 
 export const userAuth = async (req, res, next) => {
     const { token } = req.cookies;
+    console.log("Cookies received:", req.cookies);
 
     if (!token) {
         return res.status(400).json({
@@ -16,6 +17,7 @@ export const userAuth = async (req, res, next) => {
 
         if (tokenDecode.id) {
             req.body.userId = tokenDecode.id
+        
         } else {
             return res.status(400).json({
                 success: false,

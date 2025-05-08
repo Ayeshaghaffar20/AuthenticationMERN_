@@ -29,17 +29,6 @@ const EmailVerify = () => {
 
   }
 
-  // const handlePaste = (e)=>{
-  //   const paste = e.clipboardData.getData('text')
-  //   const pasteArray= paste.split('')
-  //   pasteArray.forEach((char,index) => {
-  //     if(inputRefs.current[index]){
-  //       inputRefs.current[index].value = char
-  //     }
-      
-  //   });
-
-  // }
 
   const onSubmitHandler = async (e) =>{
     try {

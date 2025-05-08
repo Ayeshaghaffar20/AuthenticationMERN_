@@ -12,23 +12,7 @@ export const AppContextProvider = (props) =>{
     const [isLoggedIn ,setIsLoggedIn] = useState(false)
     const [userData ,setUserData] = useState(false)
 
-    // const getAuthState = async ()=>{
-    //     try {
-    //         const { data } = await axios.get(backendUrl + '/api/auth/is-auth',{
-    //             withCredentials: true,
-    //         });
-    //         if(data.success){
-    //             setIsLoggedIn(false)
-    //             getUserData()
-    //         }
-            
-    //     } catch (error) {
-    //          toast.error(error.message)
 
-            
-    //     }
-
-    // }
 
     const getAuthState = async () => {
         try {
@@ -44,6 +28,8 @@ export const AppContextProvider = (props) =>{
             setIsLoggedIn(false); 
           }
         } catch (error) {
+          console.log("is-auth", error);
+
           if (error.response && error.response.status === 400) {
            
             setIsLoggedIn(false); 
@@ -62,22 +48,25 @@ export const AppContextProvider = (props) =>{
             const {data} = await axios.get(backendUrl + '/api/user/data',{
               withCredentials: true,
             })
+            console.log("sadfasdf",data );
             
             
             data.success ? setUserData(data.userData) : toast.error(data.message)
-            console.log(data);
+            console.log("check",data.userData);
         } catch (error) {
             //  toast.error(error.message)
           toast.error(error.response?.data?.message || error.message);
+          console.log("getUserData error",error);
+          
 
             
         }
     }
 
-       useEffect(()=>{
-        getAuthState()
+    //    useEffect(()=>{
+    //     getAuthState()
 
-    },[])
+    // },[])
 
     const value ={
         backendUrl,
