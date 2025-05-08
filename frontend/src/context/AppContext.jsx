@@ -14,59 +14,111 @@ export const AppContextProvider = (props) =>{
 
 
 
-    const getAuthState = async () => {
-        try {
-          const { data } = await axios.get(backendUrl + '/api/auth/is-auth', {
-            withCredentials: true,
-          });
+    // const getAuthState = async () => {
+    //     try {
+    //       const { data } = await axios.get(backendUrl + '/api/auth/is-auth', {
+    //         withCredentials: true,
+    //       });
       
           
-          if (data.success) {
-            setIsLoggedIn(true); 
-            getUserData();
-          } else {
-            setIsLoggedIn(false); 
-          }
-        } catch (error) {
-          console.log("is-auth", error);
+    //       if (data.success) {
+    //         setIsLoggedIn(true); 
+    //         getUserData();
+    //       } else {
+    //         setIsLoggedIn(false); 
+    //       }
+    //     } catch (error) {
+    //       console.log("is-auth", error);
 
-          if (error.response && error.response.status === 400) {
+    //       if (error.response && error.response.status === 400) {
            
-            setIsLoggedIn(false); 
-          } else {
+    //         setIsLoggedIn(false); 
+    //       } else {
          
-            toast.error(error.response?.data?.message || "Something went wrong");
-          }
-        }
-      };
+    //         toast.error(error.response?.data?.message || "Something went wrong");
+    //       }
+    //     }
+    //   };
       
 
  
 
-    const getUserData = async ()=>{
-        try {
-            const {data} = await axios.get(backendUrl + '/api/user/data',{
-              withCredentials: true,
-            })
-            console.log("sadfasdf",data );
+    // const getUserData = async ()=>{
+    //     try {
+    //         const {data} = await axios.get(backendUrl + '/api/user/data',{
+    //           withCredentials: true,
+    //         })
+    //         console.log("sadfasdf",data );
             
             
-            data.success ? setUserData(data.userData) : toast.error(data.message)
-            console.log("check",data.userData);
-        } catch (error) {
-            //  toast.error(error.message)
-          toast.error(error.response?.data?.message || error.message);
-          console.log("getUserData error",error);
+    //         data.success ? setUserData(data.userData) : toast.error(data.message)
+    //         console.log("check",data.userData);
+    //     } catch (error) {
+    //         //  toast.error(error.message)
+    //       toast.error(error.response?.data?.message || error.message);
+    //       console.log("getUserData error",error);
           
 
             
-        }
-    }
+    //     }
+    // }
 
     //    useEffect(()=>{
     //     getAuthState()
 
     // },[])
+
+
+    const getAuthState = async () => {
+      try {
+        const { data } = await axios.get(backendUrl + '/api/auth/is-auth', {
+          withCredentials: true,
+        });
+    
+        if (data.success) {
+          setIsLoggedIn(true); // ✅ Only set auth state here
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.log("is-auth", error);
+        if (error.response && error.response.status === 400) {
+          setIsLoggedIn(false);
+        } else {
+          toast.error(error.response?.data?.message || "Something went wrong");
+        }
+      }
+    };
+    
+    const getUserData = async () => {
+      try {
+        const { data } = await axios.get(backendUrl + '/api/user/data', {
+          withCredentials: true,
+        });
+        console.log("sadfasdf", data);
+    
+        data.success
+          ? setUserData(data.userData)
+          : toast.error(data.message);
+        console.log("check", data.userData);
+      } catch (error) {
+        toast.error(error.response?.data?.message || error.message);
+        console.log("getUserData error", error);
+      }
+    };
+    
+    // ✅ Run auth check on mount
+    useEffect(() => {
+      getAuthState();
+    }, []);
+    
+    // ✅ Get user data only *after* login state becomes true
+    useEffect(() => {
+      if (isLoggedIn) {
+        getUserData();
+      }
+    }, [isLoggedIn]);
+    
 
     const value ={
         backendUrl,
