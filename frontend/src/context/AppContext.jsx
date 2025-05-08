@@ -77,10 +77,10 @@ export const AppContextProvider = (props) =>{
     
         if (data.success) {
           setIsLoggedIn(true);
-          // Wait 500ms before calling getUserData
+         
           setTimeout(() => {
-            getUserData(); // Fetch user data after a delay
-          }, 500); // You can adjust the delay as needed
+            getUserData(); 
+          }, 500); 
         } else {
           setIsLoggedIn(false);
         }
@@ -96,10 +96,17 @@ export const AppContextProvider = (props) =>{
     
     const getUserData = async () => {
       try {
+        const token = localStorage.getItem('authToken'); 
+    
+        if (!token) {
+          toast.error("Not authorized, please log in.");
+          return;
+        }
+    
+        // Send request to get user data, withCredentials ensures the token cookie is sent
         const { data } = await axios.get(backendUrl + '/api/user/data', {
-          withCredentials: true,
+          withCredentials: true,  // This sends the cookies automatically
         });
-        console.log("User Data:", data);
     
         if (data.success) {
           setUserData(data.userData);
@@ -116,10 +123,6 @@ export const AppContextProvider = (props) =>{
       getAuthState();
     }, []);
     
-
-
-    
-
     const value ={
         backendUrl,
         isLoggedIn,setIsLoggedIn,

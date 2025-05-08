@@ -40,10 +40,11 @@ const Login = () => {
           const {data} = await axios.post(backendUrl + '/api/auth/login' ,{email,password})
           
           if(data.success){
+            localStorage.setItem('authToken', data.token);  
             setIsLoggedIn(true)
             setTimeout(() => {
-              getUserData(); // Fetch user data after a delay
-            }, 500); // You can adjust the delay as needed
+              getUserData();
+            }, 500); 
             navigate('/')
           }else{
              toast.error(data?.message || 'Something went wrong');
