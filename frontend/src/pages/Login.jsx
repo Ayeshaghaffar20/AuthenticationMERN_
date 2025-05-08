@@ -41,7 +41,9 @@ const Login = () => {
           
           if(data.success){
             setIsLoggedIn(true)
-             getUserData()
+            setTimeout(() => {
+              getUserData(); // Fetch user data after a delay
+            }, 500); // You can adjust the delay as needed
             navigate('/')
           }else{
              toast.error(data?.message || 'Something went wrong');
