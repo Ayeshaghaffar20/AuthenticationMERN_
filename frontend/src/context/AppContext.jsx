@@ -76,10 +76,10 @@ export const AppContextProvider = (props) =>{
         });
     
         if (data.success) {
-          setIsLoggedIn(true); // Set login state
+          setIsLoggedIn(true);
           // Wait 500ms before calling getUserData
           setTimeout(() => {
-            getUserData(); // Now fetch user data after the cookie is set
+            getUserData(); // Fetch user data after a delay
           }, 500); // You can adjust the delay as needed
         } else {
           setIsLoggedIn(false);
@@ -93,6 +93,31 @@ export const AppContextProvider = (props) =>{
         }
       }
     };
+    
+    const getUserData = async () => {
+      try {
+        const { data } = await axios.get(backendUrl + '/api/user/data', {
+          withCredentials: true,
+        });
+        console.log("User Data:", data);
+    
+        if (data.success) {
+          setUserData(data.userData);
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.message || error.message);
+        console.log("getUserData error", error);
+      }
+    };
+    
+    useEffect(() => {
+      getAuthState();
+    }, []);
+    
+
+
     
 
     const value ={
