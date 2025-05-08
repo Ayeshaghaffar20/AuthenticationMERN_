@@ -12,21 +12,48 @@ export const AppContextProvider = (props) =>{
     const [isLoggedIn ,setIsLoggedIn] = useState(false)
     const [userData ,setUserData] = useState(false)
 
-    const getAuthState = async ()=>{
+    // const getAuthState = async ()=>{
+    //     try {
+    //         const { data } = await axios.get(backendUrl + '/api/auth/is-auth',{
+    //             withCredentials: true,
+    //         });
+    //         if(data.success){
+    //             setIsLoggedIn(false)
+    //             getUserData()
+    //         }
+            
+    //     } catch (error) {
+    //          toast.error(error.message)
+
+            
+    //     }
+
+    // }
+
+    const getAuthState = async () => {
         try {
-            // const {data} = axios.get(backendUrl + '/api/auth/is-auth')
-            // if(data.success){
-            //     setIsLoggedIn(true)
-            //     getUserData()
-            // }
-            
+          const { data } = await axios.get(backendUrl + '/api/auth/is-auth', {
+            withCredentials: true,
+          });
+      
+          
+          if (data.success) {
+            setIsLoggedIn(true); 
+            getUserData();
+          } else {
+            setIsLoggedIn(false); 
+          }
         } catch (error) {
-             toast.error(error.message)
-
-            
+          if (error.response && error.response.status === 400) {
+           
+            setIsLoggedIn(false); 
+          } else {
+         
+            toast.error(error.response?.data?.message || "Something went wrong");
+          }
         }
-
-    }
+      };
+      
 
  
 
