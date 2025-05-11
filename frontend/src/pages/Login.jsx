@@ -10,7 +10,7 @@ const Login = () => {
 
   const navigate = useNavigate()
 
-  const {backendUrl,setIsLoggedIn, getUserData} = useContext(AppContext)
+  const {backendUrl,setIsLoggedIn, getUserData,} = useContext(AppContext)
 
   
 
@@ -27,10 +27,14 @@ const Login = () => {
 
         if(state=== 'sign Up'){
           const {data} = await axios.post(backendUrl + '/api/auth/register' ,{name,email,password})
+          console.log(data);
+          
 
           if(data.success){
             localStorage.setItem('authToken', data.token); 
-             toast.success("Account created successfully. Please log in.");
+           toast.success("✅ Account created! Check your email for a welcome message. Please log in.");
+
+
              setState('login'); 
            
           }else{
