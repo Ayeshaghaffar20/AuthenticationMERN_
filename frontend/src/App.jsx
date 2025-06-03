@@ -10,7 +10,7 @@ import ResetPassword from './pages/ResetPassword'
 const App = () => {
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer position="top-center" />
 
       <Routes>
         <Route path='/' element={<Home/>} />

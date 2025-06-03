@@ -18,8 +18,9 @@ connectDB()
 
 const allowedOrigin = ['http://localhost:5173', 'https://authentication-mern-green.vercel.app']
 
+
 app.use(express.json())
-app.use(express.urlencoded({ extended: true })); // ✅ For form data
+app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser())
 app.use(cors({ origin: allowedOrigin, credentials: true }))
 
